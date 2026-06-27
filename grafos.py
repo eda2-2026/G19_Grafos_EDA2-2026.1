@@ -1,4 +1,5 @@
 import json
+from collections import deque
 
 class Grafo:
     def __init__(self, caminho_json):
@@ -61,3 +62,22 @@ class Grafo:
             visitados.discard(disciplina) 
             
         return list(visitados)
+
+    def bfs(self, origem, destino):
+        if origem not in self.adjacencias or destino not in self.adjacencias:
+            return -1
+            
+        fila = deque([(origem, 0)])
+        visitados = {origem}
+        
+        while fila:
+            no_atual, distancia = fila.popleft()
+            if no_atual == destino:
+                return distancia
+                
+            for vizinho in self.adjacencias.get(no_atual, []):
+                if vizinho not in visitados:
+                    visitados.add(vizinho)
+                    fila.append((vizinho, distancia + 1))
+                    
+        return -1
