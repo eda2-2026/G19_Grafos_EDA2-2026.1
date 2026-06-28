@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Grade Curricular</title>
+</head>
+<body>
+    <h1>Grade Curricular - Engenharia de Software</h1>
+
+    <hr>
+
+    <section>
+        <h2>Cadeia de Pré-requisitos</h2>
+        <p>Descubra todas as matérias que você precisa fazer antes de chegar em uma disciplina.</p>
+        
+        <select id="req-disciplina">
+            <option value="">Selecione uma disciplina...</option>
+            {% for disciplina in disciplinas %}
+                <option value="{{ disciplina }}">{{ disciplina }}</option>
+            {% endfor %}
+        </select>
+        <button onclick="buscarPreRequisitos()">Pesquisar Pré-requisitos</button>
+        
+        <p><strong>Resultado:</strong> <span id="req-resultado"></span></p>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Disciplinas Dependentes</h2>
+        <p>Descubra quais matérias ficarão travadas caso você não faça esta disciplina.</p>
+        
+        <select id="dep-disciplina">
+            <option value="">Selecione uma disciplina...</option>
+            {% for disciplina in disciplinas %}
+                <option value="{{ disciplina }}">{{ disciplina }}</option>
+            {% endfor %}
+        </select>
+        <button onclick="buscarDependentes()">Pesquisar Dependentes</button>
+        
+        <p><strong>Resultado:</strong> <span id="dep-resultado"></span></p>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Distância em Semestres</h2>
+        <p>Qual a menor quantidade de semestres entre duas disciplinas?</p>
+        
+        <label for="bfs-origem">Origem:</label>
+        <select id="bfs-origem">
+            <option value="">Selecione a origem...</option>
+            {% for disciplina in disciplinas %}
+                <option value="{{ disciplina }}">{{ disciplina }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="bfs-destino">Destino:</label>
+        <select id="bfs-destino">
+            <option value="">Selecione o destino...</option>
+            {% for disciplina in disciplinas %}
+                <option value="{{ disciplina }}">{{ disciplina }}</option>
+            {% endfor %}
+        </select>
+        
+        <button onclick="buscarDistancia()">Calcular Semestres</button>
+        
+        <p><strong>Distância:</strong> <span id="bfs-resultado"></span></p>
+    </section>
+
+    <script>
+        async function buscarPreRequisitos() {
+            const disciplina = document.getElementById('req-disciplina').value;
+            if (!disciplina) return alert('Por favor, selecione uma disciplina.');
+
+            const response = await fetch(`/api/pre_requisitos?disciplina=${encodeURIComponent(disciplina)}`);
+            const data = await response.json();
+            
+            const resultadoSpan = document.getElementById('req-resultado');
+            if (data.resultado.length > 0) {
+                resultadoSpan.innerText = data.resultado.join(' -> ');
+            } else {
+                resultadoSpan.innerText = 'Nenhum pré-requisito (pode ser feita no 1º semestre).';
+            }
+        }
+
+        async function buscarDependentes() {
+            const disciplina = document.getElementById('dep-disciplina').value;
+            if (!disciplina) return alert('Por favor, selecione uma disciplina.');
+
+            const response = await fetch(`/api/dependentes?disciplina=${encodeURIComponent(disciplina)}`);
+            const data = await response.json();
+            
+            const resultadoSpan = document.getElementById('dep-resultado');
+            if (data.resultado.length > 0) {
+                resultadoSpan.innerText = data.resultado.join(', ');
+            } else {
+                resultadoSpan.innerText = 'Nenhuma disciplina depende desta.';
+            }
+        }
+
+        async function buscarDistancia() {
+            const origem = document.getElementById('bfs-origem').value;
+            const destino = document.getElementById('bfs-destino').value;
+            
+            if (!origem || !destino) return alert('Por favor, selecione origem e destino.');
+
+            const response = await fetch(`/api/distancia?origem=${encodeURIComponent(origem)}&destino=${encodeURIComponent(destino)}`);
+            const data = await response.json();
+            
+            const resultadoSpan = document.getElementById('bfs-resultado');
+            if (data.distancia !== -1) {
+                resultadoSpan.innerText = `${data.distancia} semestre(s)`;
+            } else {
+                resultadoSpan.innerText = 'Não existe caminho que conecte essas duas disciplinas.';
+            }
+        }
+    </script>
+</body>
+</html>

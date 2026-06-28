@@ -35,18 +35,22 @@ class Grafo:
 
     def dfs(self, disciplina):
         visitados = set()
+        ordem_correta = []
         
         def dfs_reversa(no):
             visitados.add(no)
+
             for vizinho in self.pre_requisitos.get(no, []):
                 if vizinho not in visitados:
                     dfs_reversa(vizinho)
-                    
+
+            if no != disciplina:
+                ordem_correta.append(no)
+                
         if disciplina in self.pre_requisitos:
             dfs_reversa(disciplina)
-            visitados.discard(disciplina)
             
-        return list(visitados)
+        return ordem_correta
 
     def dependentes_de(self, disciplina):
         visitados = set()
