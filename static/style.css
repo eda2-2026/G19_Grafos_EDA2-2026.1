@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.layout-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.sidebar {
+    width: 350px;
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.sidebar h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+.content {
+    flex: 1;
+    background-color: #f1f5f9;
+    position: relative;
+}
+
+#mynetwork {
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+section:last-child {
+    border-bottom: none;
+}
+
+h2 { 
+    margin-top: 0; font-size: 1.1rem; 
+}
+p { 
+    color: var(--text-muted); 
+    font-size: 0.9rem; 
+    margin-bottom: 1rem; 
+}
+
+select, button {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+    box-sizing: border-box;
+}
+
+select {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    outline: none;
+}
+
+select:focus { 
+    border-color: var(--primary-color); 
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover { 
+    background-color: var(--primary-hover); 
+}
+
+.resultado-box {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: #eff6ff;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+    font-weight: 600;
+    color: var(--primary-hover);
+    font-size: 0.9rem;
+}
+
+.btn-limpar {
+    background-color: var(--text-muted);
+    margin-top: 1rem;
+}
+
+.btn-limpar:hover {
+    background-color: #475569;
+}

@@ -8,13 +8,16 @@ class Grafo:
         self._carregar_do_json(caminho_json)
 
     def _carregar_do_json(self, caminho_json):
-
         with open(caminho_json, 'r', encoding='utf-8') as f:
             dados = json.load(f)
 
-        for pre_req, dependentes in dados.items():
+        self.semestres = {}
+
+        for pre_req, info in dados.items():
             self._adicionar_vertice(pre_req)
-            for disciplina in dependentes:
+            self.semestres[pre_req] = info["semestre"]
+            
+            for disciplina in info["dependentes"]:
                 self._adicionar_aresta(pre_req, disciplina)
 
     def _adicionar_vertice(self, nome):
@@ -69,19 +72,23 @@ class Grafo:
 
     def bfs(self, origem, destino):
         if origem not in self.adjacencias or destino not in self.adjacencias:
-            return -1
-            
-        fila = deque([(origem, 0)])
+            return []
+
+        fila = deque([[origem]])
         visitados = {origem}
         
         while fila:
-            no_atual, distancia = fila.popleft()
+            caminho = fila.popleft()
+            no_atual = caminho[-1]
+            
             if no_atual == destino:
-                return distancia
+                return caminho
                 
             for vizinho in self.adjacencias.get(no_atual, []):
                 if vizinho not in visitados:
                     visitados.add(vizinho)
-                    fila.append((vizinho, distancia + 1))
+                    novo_caminho = list(caminho)
+                    novo_caminho.append(vizinho)
+                    fila.append(novo_caminho)
                     
-        return -1
+        return []

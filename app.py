@@ -35,9 +35,23 @@ def distancia():
     
     if not origem or not destino:
         return jsonify({"erro": "Origem e destino são obrigatórios"}), 400
-
-    resultado_bfs = grafo.bfs(origem, destino)
-    return jsonify({"distancia": resultado_bfs})
+        
+    caminho = grafo.bfs(origem, destino)
+    
+    if caminho:
+        distancia = len(caminho) - 1
+        return jsonify({"distancia": distancia, "caminho": caminho})
+    else:
+        return jsonify({"distancia": -1, "caminho": []})
+@app.route('/api/grade')
+def obter_grade():
+    dados_visuais = {
+        materia: {
+            "dependentes": grafo.adjacencias[materia],
+            "semestre": getattr(grafo, 'semestres', {}).get(materia, 1)
+        } for materia in grafo.adjacencias
+    }
+    return jsonify(dados_visuais)
 
 if __name__ == '__main__':
     app.run(debug=True)
