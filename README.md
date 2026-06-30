@@ -10,7 +10,7 @@ Conteúdo da Disciplina: Grafos<br>
 
 ## Vídeo de Apresentação
 
-* 
+* https://youtu.be/zXQz_cgnL0Q
 
 ## Sobre 
 
